@@ -2,6 +2,10 @@
   <div class="app-wrapper">
     <div class="sidebar-container">
       <file-search v-model="searchTitle" />
+      <el-button type="primary" @click="createTest()">测-增</el-button>
+      <el-button type="danger" @click="deleteTest()">测-删</el-button>
+      <el-button type="warning" @click="updateTest()">测-改</el-button>
+      <el-button type="success" @click="queryTest()">测-查</el-button>
       <file-list :fileList="fileList" />
     </div>
     <div class="main-container">
@@ -49,6 +53,32 @@ export default {
     }
   },
   methods: {
+    // 增
+    createTest() {
+      const fileNew = { title: '无标题', content: '' }
+      this.$db.insert(fileNew)
+    },
+    // 删
+    async deleteTest() {
+      const list = await this.$db.find().sort({ updatedAt: -1 })
+      if (list.length === 0) return
+      this.$db.remove({ _id: list[0]._id }).then(() => {
+        this.$message.warning('删除成功')
+      })
+    },
+    // 改
+    async updateTest() {
+      const list = await this.$db.find().sort({ updatedAt: -1 })
+      if (list.length === 0) return
+      this.$db.update({ _id: list[0]._id }, { $set: { title: '修改过的标题' } }).then(() => {
+        this.$message.success('修改成功')
+      })
+    },
+    // 查
+    async queryTest() {
+      const list = await this.$db.find().sort({ updatedAt: -1 })
+      console.log(list)
+    },
     onSubmit(value) {
       console.log(value)
       console.log(this.fileItem)
