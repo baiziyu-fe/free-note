@@ -4,17 +4,27 @@
       <file-search v-model="searchTitle" />
       <file-list :fileList="fileList" />
     </div>
-    <div class="main-container"></div>
+    <div class="main-container">
+      <file-edit
+        v-model="fileItem.content"
+        :title.sync="fileItem.title"
+        :boxShadow="false"
+        :subfield="false"
+        :shortCut="false"
+        @change="onSubmit"
+      />
+    </div>
   </div>
 </template>
 
 <script>
 import FileSearch from '@/components/FileSearch'
 import FileList from '@/components/FileList'
+import FileEdit from '@/components/FileEdit'
 
 export default {
   name: 'Home',
-  components: { FileSearch, FileList },
+  components: { FileSearch, FileList, FileEdit },
   data() {
     return {
       searchTitle: '',
@@ -31,7 +41,17 @@ export default {
         { id: 4, title: '文件名 4', time: '2020-06-21' },
         { id: 5, title: '文件名 5', time: '2020-06-21' },
         { id: 6, title: '文件名 6', time: '2020-06-21' }
-      ]
+      ],
+      fileItem: {
+        title: '手摸手Electron + Vue实战教程（三）',
+        content: ''
+      }
+    }
+  },
+  methods: {
+    onSubmit(value) {
+      console.log(value)
+      console.log(this.fileItem)
     }
   }
 }
@@ -47,6 +67,7 @@ export default {
   }
   .main-container {
     flex: 1;
+    overflow: hidden;
   }
 }
 </style>
